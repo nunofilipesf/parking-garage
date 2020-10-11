@@ -13,7 +13,12 @@ export function getInitialData() {
             getFloor('3rd Floor', 80),
             getFloor('4th Floor', 50)
         ],
-        sessions: []
+        sessions: [],
+        feeModel: [
+            { priority: 1, amount: 50, numberOfHours: 1 },
+            { priority: 2, amount: 30, numberOfHours: 2 },
+            { priority: 3, amount: 10, numberOfHours: null }
+        ]
     };
 
     for (let i = 0; i < 200; i++)
@@ -41,8 +46,13 @@ export function generateRandomChanges(data) {
         data.floors[floor].spots[spot].isFree = true;
 
         const openSession = data.sessions.find(session => session.endDate == null);
-        if (openSession)
-            openSession.endDate = new Date();
+        if (openSession) {
+            openSession.endDate = new Date(openSession.startDate.getTime());
+
+            const sessionDuration = Math.floor(Math.random() * 8) + 1; // Generate random duration for the parking session (between 1 and 8)
+
+            openSession.endDate.setHours(openSession.endDate.getHours() + sessionDuration);
+        }
     }
 }
 

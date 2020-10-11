@@ -9,27 +9,15 @@ export function subscribeDataUpdates(callback) {
     }, 1000);
 }
 
-// export function getFloors() {
-//     return Promise.resolve(data.floors);
-// }
-
 export function getGarageOccupation() {
     const floorsOccupationData = data.floors.map(calculateFloorOccupation);
 
     return Promise.resolve({
         garage: floorsOccupationData.reduce(calculateTotalOccupationReducer, { capacity: 0, availableSpots: 0, occupiedSpots: 0 }),
-        floors: floorsOccupationData
+        floors: floorsOccupationData,
+        earnings: calculateEarnings(data.sessions, data.feeModel)
     });
 }
-
-// export function getFloorOccupation(floorIdentifier) {
-//     const floorData = data.floors.find(floor => floor.id === floorIdentifier);
-
-//     if (floorData == null)
-//         return Promise.reject('Floor not found');
-
-//     return Promise.resolve(calculateFloorOccupation(floorData));
-// }
 
 function calculateFloorOccupation(floorData) {
     const totalCapacity = floorData.spots.length;
@@ -49,4 +37,44 @@ function calculateTotalOccupationReducer(totals, floorStatistics) {
         availableSpots: totals.availableSpots + floorStatistics.availableSpots,
         occupiedSpots: totals.occupiedSpots + floorStatistics.occupiedSpots
     };
+}
+
+function calculateEarnings(sessions, fees) {
+    let totalAmount = 0;
+    let numberOfSessions = 0;
+
+    for (let i = 0; i < sessions.length; i++) {
+        const session = sessions[i];
+
+        if (session.endDate == null)
+            continue;
+
+        numberOfSessions++;
+        totalAmount += calculateSessionValue(session, fees);
+    }
+
+    return { numberOfSessions, totalAmount };
+}
+
+function calculateSessionValue(session, fees) {
+    let amount = 0;
+    const sessionDurationInHours = Math.abs(session.endDate - session.startDate) / 36e5; // 36e5 == 3600000 == 60 (minutes) * 60 (seconds) * 1000 (miliseconds)
+    let remainingHoursToEvaluate = sessionDurationInHours;
+
+    for (const fee of fees) {
+        if (remainingHoursToEvaluate <= 0)
+            break;
+
+        if (fee.numberOfHours == null) {
+            // It is assumed that can exist a fee with numberOfHours == null 
+            // That fee will be used to calculate the amount when no more fees with numberOfHours exist (meaning, the remaining hours)
+            amount += remainingHoursToEvaluate * fee.amount;
+            break;
+        }
+
+        amount += fee.numberOfHours * fee.amount;
+        remainingHoursToEvaluate -= fee.numberOfHours;
+    }
+
+    return amount;
 }

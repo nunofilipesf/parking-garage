@@ -4,7 +4,7 @@ export default function ({ capacity, occupiedSpots }) {
     const availableSpots = capacity - occupiedSpots;
     const capacityPercentage = (availableSpots / capacity * 100).toFixed(1);
 
-    return <div className="card-group">
+    return <div className="occupation-totals-panel card-group">
         <div className="card bg-dark text-white">
             <div className="card-header h5 text-center">Occupied spots</div>
             <div className="card-body">
@@ -24,7 +24,7 @@ export default function ({ capacity, occupiedSpots }) {
                 <p className="display-2 text-center">{availableSpots}</p>
             </div>
         </div>
-    </div>
+    </div>;
 }
 
 function getColorBasedOnCurrentCapacity(currentCapacity) {
