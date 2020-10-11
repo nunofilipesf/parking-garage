@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/parking-garage/static/css/main.d2eaa143.chunk.css",
+    "main.js": "/parking-garage/static/js/main.2f76aabd.chunk.js",
+    "main.js.map": "/parking-garage/static/js/main.2f76aabd.chunk.js.map",
+    "runtime-main.js": "/parking-garage/static/js/runtime-main.596517a6.js",
+    "runtime-main.js.map": "/parking-garage/static/js/runtime-main.596517a6.js.map",
+    "static/js/2.ade2e5c1.chunk.js": "/parking-garage/static/js/2.ade2e5c1.chunk.js",
+    "static/js/2.ade2e5c1.chunk.js.map": "/parking-garage/static/js/2.ade2e5c1.chunk.js.map",
+    "index.html": "/parking-garage/index.html",
+    "precache-manifest.149700a894ef12cf53649a974e675b45.js": "/parking-garage/precache-manifest.149700a894ef12cf53649a974e675b45.js",
+    "service-worker.js": "/parking-garage/service-worker.js",
+    "static/css/main.d2eaa143.chunk.css.map": "/parking-garage/static/css/main.d2eaa143.chunk.css.map",
+    "static/js/2.ade2e5c1.chunk.js.LICENSE.txt": "/parking-garage/static/js/2.ade2e5c1.chunk.js.LICENSE.txt",
+    "static/media/index.css": "/parking-garage/static/media/bg.2135ece3.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.596517a6.js",
+    "static/js/2.ade2e5c1.chunk.js",
+    "static/css/main.d2eaa143.chunk.css",
+    "static/js/main.2f76aabd.chunk.js"
+  ]
+}
