@@ -5,7 +5,9 @@ import FloorOccupationPanel from './components/FloorOccupationPanel';
 import Loader from './components/Loader';
 import OccupationTotalsPanel from './components/OccupationTotalsPanel';
 
-import { getGarageOccupation, subscribeDataUpdates } from './services/api';
+import { getGarageOccupation, subscribeDataUpdates } from './services/garage';
+
+import { calculateEarnings } from './services/garage.helpers';
 
 const VisualizationModes = { Earnings: 'Earnings', Occupation: 'Occupation' };
 
@@ -24,6 +26,14 @@ export default function App() {
                 subscribeDataUpdates(onDataUpdate);
             });
     }, []);
+
+    const fees = [
+        { priority: 1, amount: 50, numberOfHours: 1 },
+        { priority: 2, amount: 30, numberOfHours: 2 },
+        { priority: 3, amount: 10, numberOfHours: null }
+    ];
+    const twoHoursSingleSession = [{ id: '', licensePlace: 'AA-ABCDE-123', startDate: new Date('2020-10-10T10:00:00'), endDate: new Date('2020-10-10T12:00:00') }];
+    const r = calculateEarnings(twoHoursSingleSession, fees);
 
 
     function onDataUpdate(newDataValue) {

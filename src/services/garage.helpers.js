@@ -1,25 +1,4 @@
-import { getInitialData, generateRandomChanges } from './sample-data';
-
-const data = getInitialData();
-
-export function subscribeDataUpdates(callback) {
-    setInterval(async() => {
-        generateRandomChanges(data);
-        callback(await getGarageOccupation());
-    }, 1000);
-}
-
-export function getGarageOccupation() {
-    const floorsOccupationData = data.floors.map(calculateFloorOccupation);
-
-    return Promise.resolve({
-        garage: floorsOccupationData.reduce(calculateTotalOccupationReducer, { capacity: 0, availableSpots: 0, occupiedSpots: 0 }),
-        floors: floorsOccupationData,
-        earnings: calculateEarnings(data.sessions, data.feeModel)
-    });
-}
-
-function calculateFloorOccupation(floorData) {
+export function calculateFloorOccupation(floorData) {
     const totalCapacity = floorData.spots.length;
     const numberOfAvailableSpots = floorData.spots.filter(spot => spot.isFree).length;
 
@@ -31,15 +10,7 @@ function calculateFloorOccupation(floorData) {
     };
 }
 
-function calculateTotalOccupationReducer(totals, floorStatistics) {
-    return {
-        capacity: totals.capacity + floorStatistics.capacity,
-        availableSpots: totals.availableSpots + floorStatistics.availableSpots,
-        occupiedSpots: totals.occupiedSpots + floorStatistics.occupiedSpots
-    };
-}
-
-function calculateEarnings(sessions, fees) {
+export function calculateEarnings(sessions, fees) {
     let totalAmount = 0;
     let numberOfSessions = 0;
 
@@ -72,7 +43,7 @@ function calculateSessionValue(session, fees) {
             break;
         }
 
-        amount += fee.numberOfHours * fee.amount;
+        amount += Math.min(fee.numberOfHours, remainingHoursToEvaluate) * fee.amount;
         remainingHoursToEvaluate -= fee.numberOfHours;
     }
 
